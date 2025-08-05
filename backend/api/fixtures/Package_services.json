@@ -1,0 +1,42 @@
+[
+  {
+    "model": "api.package_service",
+    "pk": 1,
+    "fields": {
+      "service": 1,
+      "package": 1
+    }
+  },
+  {
+    "model": "api.package_service",
+    "pk": 2,
+    "fields": {
+      "service": 2,
+      "package": 1
+    }
+  },
+  {
+    "model": "api.package_service",
+    "pk": 3,
+    "fields": {
+      "service": 1,
+      "package": 2
+    }
+  },
+  {
+    "model": "api.package_service",
+    "pk": 4,
+    "fields": {
+      "service": 3,
+      "package": 3
+    }
+  },
+  {
+    "model": "api.package_service",
+    "pk": 5,
+    "fields": {
+      "service": 2,
+      "package": 2
+    }
+  }
+]

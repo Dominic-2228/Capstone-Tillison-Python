@@ -1,0 +1,72 @@
+[
+  {
+    "model": "api.booking_time",
+    "pk": 1,
+    "fields": {
+      "availability_date": "2025-08-01T10:00:00Z",
+      "user": 1,
+      "package": 1,
+      "client_description": "Interested in outdoor family photos",
+      "email": "client1@example.com",
+      "phone_number": "555-123-4567",
+      "location": "Charlotte, NC",
+      "is_booked": false
+    }
+  },
+  {
+    "model": "api.booking_time",
+    "pk": 2,
+    "fields": {
+      "availability_date": "2025-08-02T14:00:00Z",
+      "user": 2,
+      "package": 2,
+      "client_description": "Senior graduation session",
+      "email": "client2@example.com",
+      "phone_number": "555-234-5678",
+      "location": "Raleigh, NC",
+      "is_booked": true
+    }
+  },
+  {
+    "model": "api.booking_time",
+    "pk": 3,
+    "fields": {
+      "availability_date": "2025-08-03T09:30:00Z",
+      "user": 1,
+      "package": 1,
+      "client_description": "Engagement photoshoot",
+      "email": "client3@example.com",
+      "phone_number": "555-345-6789",
+      "location": "Durham, NC",
+      "is_booked": false
+    }
+  },
+  {
+    "model": "api.booking_time",
+    "pk": 4,
+    "fields": {
+      "availability_date": "2025-08-05T11:00:00Z",
+      "user": 3,
+      "package": null,
+      "client_description": "Inquiring about pet portraits",
+      "email": "client4@example.com",
+      "phone_number": "555-456-7890",
+      "location": "Chapel Hill, NC",
+      "is_booked": false
+    }
+  },
+  {
+    "model": "api.booking_time",
+    "pk": 5,
+    "fields": {
+      "availability_date": "2025-08-07T16:00:00Z",
+      "user": 2,
+      "package": 3,
+      "client_description": "Wedding photography package",
+      "email": "client5@example.com",
+      "phone_number": "555-567-8901",
+      "location": "Greensboro, NC",
+      "is_booked": true
+    }
+  }
+]

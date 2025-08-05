@@ -1,0 +1,37 @@
+[
+  {
+    "model": "api.service",
+    "pk": 1,
+    "fields": {
+      "description": "Photography session"
+    }
+  },
+  {
+    "model": "api.service",
+    "pk": 2,
+    "fields": {
+      "description": "Video recording"
+    }
+  },
+  {
+    "model": "api.service",
+    "pk": 3,
+    "fields": {
+      "description": "Photo editing"
+    }
+  },
+  {
+    "model": "api.service",
+    "pk": 4,
+    "fields": {
+      "description": "Event coverage"
+    }
+  },
+  {
+    "model": "api.service",
+    "pk": 5,
+    "fields": {
+      "description": "Live streaming"
+    }
+  }
+]

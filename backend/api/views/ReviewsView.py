@@ -1,0 +1,67 @@
+from rest_framework.viewsets import ViewSet
+from api.models import Review, Package
+from rest_framework.response import Response
+from rest_framework import status
+from api.Serializers import ReviewSerializer
+from django.http import HttpResponseServerError
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
+
+class ReviewsView(ViewSet):
+  def list(self, request):
+    try:
+      review = Review.objects.all()
+      serializer = ReviewSerializer(review, many=True)
+      return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    except Exception as ex:
+      return HttpResponseServerError(ex)
+    
+  def retrieve(self, request, pk=None):
+    try:
+      review = Review.objects.get(pk=pk)
+      serializer = ReviewSerializer(review)
+      return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except Review.DoesNotExist:
+      return Response({"message": "Review not found"}, status=status.HTTP_404_NOT_FOUND)
+
+  def create(self, request, pk=None):
+    chosen_user = User.objects.get(pk=request.data['user_id'])
+    chosen_package = Package.objects.get(pk=request.data['package_id'])
+
+    review = Review()
+    review.description = request.data["description"]
+    review.user = chosen_user
+    review.rating = request.data["rating"]
+    review.package = chosen_package
+    review.save()
+
+    serialized = ReviewSerializer(review, many=False)
+    return Response(serialized.data, status=status.HTTP_201_CREATED)
+  
+  def update(self, request, pk=None):
+    try:
+      review = Review.objects.get(pk=pk)
+      review.description = request.data.get("description", review.description)
+      review.rating = request.data.get("rating", review.rating)
+      review.save()
+
+      serializer = ReviewSerializer(review)
+      return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except Review.DoesNotExist:
+      return Response({"message": "Review not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+  def destroy(self, request, pk=None):
+    try:
+      review = Review.objects.get(pk=pk)
+      review.delete()
+      return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    except Review.DoesNotExist:
+       return Response({"message": "Review not found"}, status=status.HTTP_404_NOT_FOUND)
+  
+

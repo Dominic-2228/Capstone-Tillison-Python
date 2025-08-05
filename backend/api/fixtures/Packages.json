@@ -1,0 +1,42 @@
+[
+  {
+    "model": "api.package",
+    "pk": 1,
+    "fields": {
+      "name": "Basic Package",
+      "price": 100
+    }
+  },
+  {
+    "model": "api.package",
+    "pk": 2,
+    "fields": {
+      "name": "Standard Package",
+      "price": 200
+    }
+  },
+  {
+    "model": "api.package",
+    "pk": 3,
+    "fields": {
+      "name": "Premium Package",
+      "price": 300
+    }
+  },
+  {
+    "model": "api.package",
+    "pk": 4,
+    "fields": {
+      "name": "Photography Package",
+      "price": 250
+    }
+  },
+  {
+    "model": "api.package",
+    "pk": 5,
+    "fields": {
+      "name": "Videography Package",
+      "price": 350
+    }
+  }
+]
