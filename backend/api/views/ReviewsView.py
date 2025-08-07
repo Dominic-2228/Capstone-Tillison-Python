@@ -7,16 +7,21 @@ from django.http import HttpResponseServerError
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
+# class ReviewsView(ModelViewSet):
+    # queryset = Review.objects.select_related("user").all()
+    # serializer_class = ReviewSerializer
+
 
 class ReviewsView(ViewSet):
+  serializer_class = ReviewSerializer
   def list(self, request):
     try:
-      review = Review.objects.all()
-      serializer = ReviewSerializer(review, many=True)
-      return Response(serializer.data, status=status.HTTP_200_OK)
-    
+        reviews = Review.objects.select_related("user").all()
+        print("Using ReviewSerializer:", ReviewSerializer)
+        serializer = ReviewSerializer(reviews, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as ex:
-      return HttpResponseServerError(ex)
+            return Response({"error": str(ex)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
   def retrieve(self, request, pk=None):
     try:

@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
 from django.http import HttpResponseServerError
+from rest_framework.permissions import IsAuthenticated
 
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
@@ -46,6 +47,14 @@ class UserViewSet(viewsets.ModelViewSet):
       return Response({'token': token.key}, status=status.HTTP_200_OK)
     else:
       return Response({'error': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+  @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated], url_path='profile')
+  def profile(self, request):
+        """Return data for the currently authenticated user"""
+        serializer = UserSerializer(request.user, context={'request': request})
+        return Response(serializer.data)
+    
 
   def retrieve(self, request, pk=None):
         """Handle GET requests for single customer
