@@ -9,7 +9,7 @@ class PackageView(ViewSet):
   def list(self, request):
     try:
       package = Package.objects.all()
-      serializer = PackageSerializer(package)
+      serializer = PackageSerializer(package, many=True)
       return Response(serializer.data, status=status.HTTP_200_OK)
 
     except Exception as ex:

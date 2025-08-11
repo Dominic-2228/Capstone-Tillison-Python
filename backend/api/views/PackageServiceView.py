@@ -8,7 +8,7 @@ from api.Serializers import PackageServiceSerializer
 class PackageServicesView(ViewSet):
   def list(self, request):
     package_service = Package_Service.objects.all()
-    serializer = PackageServiceSerializer(package_service)
+    serializer = PackageServiceSerializer(package_service, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
   
   def retrieve(self, request, pk=None):

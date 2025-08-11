@@ -4,4 +4,4 @@ from api.models import Package
 class PackageSerializer(serializers.ModelSerializer):
   class Meta:
     model = Package
-    fields = ("name", "price")
+    fields = ["id", "name", "price"]
