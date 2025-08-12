@@ -33,12 +33,11 @@ class ReviewsView(ViewSet):
       return Response({"message": "Review not found"}, status=status.HTTP_404_NOT_FOUND)
 
   def create(self, request, pk=None):
-    chosen_user = User.objects.get(pk=request.data['user_id'])
     chosen_package = Package.objects.get(pk=request.data['package_id'])
 
     review = Review()
     review.description = request.data["description"]
-    review.user = chosen_user
+    review.user = request.user
     review.rating = request.data["rating"]
     review.package = chosen_package
     review.save()
