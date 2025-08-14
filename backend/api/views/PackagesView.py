@@ -4,8 +4,17 @@ from django.http import HttpResponseServerError
 from rest_framework import status
 from api.models import Package
 from api.Serializers import PackageSerializer
+from rest_framework import viewsets, status, permissions
 
 class PackageView(ViewSet):
+  def get_permissions(self):
+        # Allow anyone to list or retrieve packages
+        if self.action in ['list', 'retrieve']:
+            permission_classes = [permissions.AllowAny]
+        else:
+            permission_classes = [permissions.IsAuthenticated]  # for create/update/delete
+        return [p() for p in permission_classes]
+  
   def list(self, request):
     try:
       package = Package.objects.all()

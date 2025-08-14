@@ -4,8 +4,33 @@ from django.http import HttpResponseServerError
 from rest_framework import status
 from api.models import Package_Service, Service, Package
 from api.Serializers import PackageServiceSerializer
+from rest_framework import viewsets, status, permissions
+from rest_framework.decorators import action, permission_classes
 
 class PackageServicesView(ViewSet):
+  def get_permissions(self):
+        # Allow anyone to list or retrieve packages
+        if self.action in ['list', 'retrieve']:
+            permission_classes = [permissions.AllowAny]
+        else:
+            permission_classes = [permissions.IsAuthenticated]  # for create/update/delete
+        return [p() for p in permission_classes]
+  
+  @action(detail=True, methods=['post'], url_path='bulk-update')
+  def bulk_update_services(self, request, pk=None):
+        add_ids = request.data.get('added', [])
+        remove_ids = request.data.get('removed', [])
+
+        # Add new services
+        for service_id in add_ids:
+            Package_Service.objects.get_or_create(package_id=pk, service_id=service_id)
+
+        # Remove unchecked services
+        Package_Service.objects.filter(package_id=pk, service_id__in=remove_ids).delete()
+
+        return Response({"message": "Services updated"}, status=status.HTTP_200_OK)
+  
+
   def list(self, request):
     package_service = Package_Service.objects.all()
     serializer = PackageServiceSerializer(package_service, many=True)
