@@ -5,7 +5,8 @@ from .Package import Package
 
 class Booking_time(models.Model):
   availability_date = models.DateTimeField()
-  user  = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+  user  = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+  name = models.CharField(max_length=100, blank=True) 
   package = models.ForeignKey(Package, on_delete=models.SET_NULL, null=True)
   client_description = models.CharField(max_length=155)
   email = models.CharField(max_length=155)
