@@ -20,7 +20,7 @@ class ReviewsView(ViewSet):
 
     def get_permissions(self):
       print("Action:", getattr(self, 'action', None))
-      if self.action in ['list', 'retrieve']:
+      if self.action in ['list', 'retrieve', 'create']:
           return [permissions.AllowAny()]
       return [permissions.IsAuthenticated()]
 

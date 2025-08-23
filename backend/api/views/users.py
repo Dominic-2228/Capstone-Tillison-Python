@@ -11,10 +11,11 @@ from django.contrib.auth import authenticate
 
 
 class UserSerializer(serializers.ModelSerializer):
+    is_superuser = serializers.BooleanField(required=False, default=False)
     class Meta:
         model = User
         fields = ["id", "username", "password", "first_name", "last_name", "email", "is_superuser"]
-        extra_kwargs = {"password": {"write_only": True}}
+        extra_kwargs = {"password": {"write_only": True}, "is_superuser": {"required": False},}
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -25,14 +26,30 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=["post"], url_path="register")
     def register_account(self, request):
         serializer = UserSerializer(data=request.data)
+        is_superuser = request.data.get("is_superuser", False)
         if serializer.is_valid():
-            user = User.objects.create_user(
-                username=serializer.validated_data["username"],
-                password=serializer.validated_data["password"],
-                first_name=serializer.validated_data["first_name"],
-                last_name=serializer.validated_data["last_name"],
-                email=serializer.validated_data["email"],
-            )
+            if is_superuser:
+                # This sets is_staff=True and is_superuser=True automatically
+                user = User.objects.create_superuser(
+                    username=serializer.validated_data["username"],
+                    password=serializer.validated_data["password"],
+                    first_name=serializer.validated_data["first_name"],
+                    last_name=serializer.validated_data["last_name"],
+                    email=serializer.validated_data["email"],
+                )
+            else:
+                user = User.objects.create_user(
+                    username=serializer.validated_data["username"],
+                    password=serializer.validated_data["password"],
+                    first_name=serializer.validated_data["first_name"],
+                    last_name=serializer.validated_data["last_name"],
+                    email=serializer.validated_data["email"],
+                )
+
+            if serializer.validated_data.get("is_superuser", False):
+                user.is_superuser = True
+                user.is_staff = True   # usually needed so they can access Django admin
+                user.save()
             token, created = Token.objects.get_or_create(user=user)
             return Response({"token": token.key}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -45,7 +62,7 @@ class UserViewSet(viewsets.ModelViewSet):
         user = authenticate(username=username, password=password)
 
         if user:
-            token = Token.objects.get(user=user)
+            token, _ = Token.objects.get_or_create(user=user)
             return Response({"token": token.key}, status=status.HTTP_200_OK)
         else:
             return Response(
